@@ -2,7 +2,7 @@ import useAxios from "../hooks/useAxios";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useDispatch} from 'react-redux'
+import { useDispatch } from "react-redux";
 import { handleScoreChange } from "../redux/actions";
 import { decode } from "html-entities";
 
@@ -11,10 +11,10 @@ const getRandomInt = (max) => {
 };
 
 const Questions = () => {
-    const { question_category, question_difficulty, question_type, amount_of_questions,  score } =
+    const { question_category, question_difficulty, question_type, amount_of_questions, score } =
         useSelector((state) => state);
-        const navigate = useNavigate()
-        const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     let apiUrl = `/api.php?amount=${amount_of_questions}`;
 
     if (question_category) {
@@ -50,27 +50,39 @@ const Questions = () => {
     }
 
     const handleClickAnswer = (e) => {
-        const question = response.results[questionIndex]
-        if ( e.target.textContent === question.correct_answer ) {
-            dispatch(handleScoreChange(score+1))
+        const question = response.results[questionIndex];
+        if (e.target.textContent === question.correct_answer) {
+            dispatch(handleScoreChange(score + 1));
         }
-        if ( questionIndex + 1 < response.results.length) {
-            setQuestionIndex(questionIndex + 1 )
+        if (questionIndex + 1 < response.results.length) {
+            setQuestionIndex(questionIndex + 1);
         } else {
-            navigate("/score")
+            navigate("/score");
         }
-    }
+    };
 
     return (
         <div>
-            <h4>Question {questionIndex + 1}</h4>
-            <p>{decode(response.results[questionIndex].question)}</p>
+            <div className="block h-screen items-center justify-center p-4 md:flex">
+            <div className="bg-white rounded-md flex flex-col py-2 items-center max-w-screen-sm p-4 space-y-8 shadow-md">
+                <h4 className="font-medium text-3xl">Question {questionIndex + 1}</h4>
+                <p className="text-md">{decode(response.results[questionIndex].question)}</p>
 
-            {options.map((data, id) => (
-                <button key={id} onClick={handleClickAnswer}>{decode(data)}</button>
-            ))}
+                {options.map((data, id) => (
+                    <button
+                        className="bg-indigo-500 font-medium inline-flex px-3 py-1 rounded-md text-white"
+                        key={id}
+                        onClick={handleClickAnswer}
+                    >
+                        {decode(data)}
+                    </button>
+                ))}
 
-            <p>Score: {score} / { response.results.length} </p>
+                <p>
+                    Score: {score} / {response.results.length}{" "}
+                </p>
+            </div>
+            </div>
         </div>
     );
 };

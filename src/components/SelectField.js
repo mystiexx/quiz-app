@@ -23,9 +23,9 @@ const SelectField = (props) => {
         }
     };
     return (
-        <div>
-            <label>{label}</label>
-            <select value={value} onChange={handleChange}>
+        <div className="flex flex-col">
+            <label className="font-medium text-md py-2">{label}</label>
+            <select className="border border-gray-300 outline-none pl-3 pr-4 py-1 rounded-md" value={value} onChange={handleChange}>
                 {options.map(({ id, name }) => (
                     <option key={id} value={id}>
                         {name}
